@@ -1,7 +1,7 @@
 package refactoring;
 
-import java.util.Vector;
 import java.util.Enumeration;
+import java.util.Vector;
 
 class Customer {
     private String name;
@@ -25,10 +25,7 @@ class Customer {
         Enumeration eRentals = rentals.elements();
         String result = "Rental record for " + getName() + "\n";
         while (eRentals.hasMoreElements()) {
-            double thisAmount = 0;
             Rental each = (Rental)eRentals.nextElement();
-            
-            thisAmount = amountFor(each);
 
             // add frequent renter points
             frequentRenterPoints++;
@@ -38,35 +35,14 @@ class Customer {
                 frequentRenterPoints++;
 
             // show figures for this rental
-            result += "\t" + each.getMovie().getTitle() + "\t" + String.valueOf(thisAmount) + "\n";
-            totalAmount += thisAmount;
+            result += "\t" + each.getMovie().getTitle() + "\t" + String.valueOf(each.getCharge()) + "\n";
+            totalAmount += each.getCharge();
         }
 
         // add footer lines
         result += "Amount owed is " + String.valueOf(totalAmount) + "\n";
         result += "You earned " + String.valueOf(frequentRenterPoints) + " frequent renter points";
 
-        return result;
-    }
-    
-    private double amountFor(Rental aRental) {
-        double result = 0;
-        switch (aRental.getMovie().getPriceCode()) {
-        case Movie.REGULAR:
-            result += 2;
-            if (aRental.getDaysRented() > 2)
-                result += (aRental.getDaysRented() - 2) * 1.5;
-            break;
-        case Movie.NEW_RELEASE:
-            result += aRental.getDaysRented() * 3;
-            break;
-        case Movie.CHILDRENS:
-            result += 1.5;
-            if (aRental.getDaysRented() > 3) {
-                result += (aRental.getDaysRented() - 3) * 1.5;
-            }
-            break;
-        }
         return result;
     }
 }
